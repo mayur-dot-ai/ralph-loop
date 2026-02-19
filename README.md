@@ -11,6 +11,29 @@ We adapted it for our multi-agent orchestration system.
 
 ---
 
+## Project History
+
+### The Journey
+
+1. **Started with ClawServant** — We built [ClawServant](https://github.com/mayur-dot-ai/ClawServant), a Python-based agent framework running on AWS Bedrock. Agents could process tasks and use tools.
+
+2. **Hit a wall** — Agents completed tasks after ONE tool call. Complex tasks (read context → analyze → post) would stop after step 1. The agent thought it was done.
+
+3. **Discovered Ralph Wiggum pattern** — Found [AwesomeClaude.ai/ralph-wiggum](https://awesomeclaude.ai/ralph-wiggum) which showed how to loop agents until they signal completion.
+
+4. **This repo: Alpha test** — Created `ralph-wrapper.sh` as a quick bash wrapper to test the loop pattern externally, without modifying ClawServant code.
+
+5. **It worked** — Successfully completed GitHub Issue #14 (a full feature implementation) in 1 iteration with max 10 allowed.
+
+6. **Next step: Integrate into ClawServant** — Now taking these learnings back to [ClawServant](https://github.com/mayur-dot-ai/ClawServant/issues/3) to build the loop pattern directly into the framework.
+
+### Current Status
+
+- **This repo (`ralph-loop`)**: Alpha/reference implementation (bash wrapper)
+- **ClawServant**: Production framework, will integrate loop pattern natively ([Issue #3](https://github.com/mayur-dot-ai/ClawServant/issues/3))
+
+---
+
 ## Background
 
 ### The Problem
@@ -69,7 +92,7 @@ created_at: 2026-02-19T10:00:00Z
 Your actual task description here...
 ```
 
-- **Python manages** the frontmatter (iteration, status)
+- **Python/Bash manages** the frontmatter (iteration, status)
 - **LLM focuses** on the task content
 - **State persists** to disk between iterations
 
@@ -85,7 +108,7 @@ This can appear anywhere in the output. The loop controller checks for it.
 
 ## Usage
 
-### Standalone Script
+### Standalone Script (This Repo)
 ```bash
 ./ralph-wrapper.sh <issue_number> [max_iterations]
 
@@ -93,7 +116,7 @@ This can appear anywhere in the output. The loop controller checks for it.
 ./ralph-wrapper.sh 14 10
 ```
 
-### Integrated (ClawServant)
+### Future: Integrated in ClawServant
 ```bash
 python3 clawservant.py --task "task.md" --loop --max-iterations 10
 ```
@@ -126,5 +149,6 @@ MIT
 
 ## Related
 
-- [ClawServant](https://github.com/mayur-dot-ai/ClawServant) — The agent framework (integrating this pattern)
+- [ClawServant](https://github.com/mayur-dot-ai/ClawServant) — The agent framework (will integrate this pattern)
+- [ClawServant Issue #3](https://github.com/mayur-dot-ai/ClawServant/issues/3) — Integration ticket
 - [ClawSysMon-Pro](https://github.com/mayur-dot-ai/ClawSysMon-Pro) — Project management for AI orchestration
